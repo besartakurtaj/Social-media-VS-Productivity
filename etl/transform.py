@@ -9,3 +9,5 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
         else:
             df[col] = df[col].fillna(df[col].mode()[0])
 
+    if "gender" in df.columns:
+        df["gender"] = df["gender"].map({"Male": "M", "Female": "F", "Other": "O"})

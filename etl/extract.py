@@ -20,4 +20,8 @@ def extract_data(file_path: str) -> pd.DataFrame:
     print("\n Descriptive Statistics:")
     print(df.describe())
 
+    #mostrimi ose sampling (10% of dataset)
+    df_sample = df.sample(frac=0.1, random_state=42)
+    print(f"\nSampled Data Shape: {df_sample.shape}")
+
     return df

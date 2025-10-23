@@ -20,6 +20,10 @@ def extract_data(file_path: str) -> pd.DataFrame:
     print("\n Descriptive Statistics:")
     print(df.describe())
 
+    print("\n Unique Value Counts:")
+    for col in df.select_dtypes(include=["object"]).columns[:19]:
+        print(f"{col}: {df[col].nunique()} unique values")
+
     #mostrimi ose sampling (10% of dataset)
     df_sample = df.sample(frac=0.1, random_state=42)
     print(f"\nSampled Data Shape: {df_sample.shape}")

@@ -13,6 +13,12 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     if "gender" in df.columns:
         df["gender"] = df["gender"].map({"Male": "M", "Female": "F", "Other": "O"})
 
+    #diskretizimi (for numeric columns)
+    numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns
+    if len(numeric_cols) > 0:
+        discretizer = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
+        df[numeric_cols] = discretizer.fit_transform(df[numeric_cols])
+        print("Discretization applied to numeric columns successfully.")
 
     # Dimensionality reduction
     numeric_cols = df.select_dtypes(include=["float64", "int64"]).columns

@@ -36,3 +36,6 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     
         df = df.drop(columns=cat_cols)
         df = pd.concat([df.reset_index(drop=True), encoded_df.reset_index(drop=True)], axis=1)
+
+    bool_cols = df.select_dtypes(include=["bool"]).columns
+    df[bool_cols] = df[bool_cols].astype("category")

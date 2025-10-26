@@ -1,0 +1,21 @@
+dependency_map = {
+    "age": ["job_type", "stress_level", "sleep_hours"],
+    "gender": ["social_platform_preference", "age"],
+    "job_type": ["work_hours_per_day", "stress_level", "days_feeling_burnout_per_month"],
+    "daily_social_media_time": ["gender", "job_type", "stress_level", "sleep_hours"],
+    "social_platform_preference": ["gender", "age"],
+    "number_of_notifications": ["daily_social_media_time", "stress_level"],
+    "work_hours_per_day": ["job_type", "stress_level", "perceived_productivity_score"],
+    "perceived_productivity_score": ["actual_productivity_score", "stress_level", "job_satisfaction_score"],
+    "actual_productivity_score": ["perceived_productivity_score", "work_hours_per_day", "sleep_hours"],
+    "stress_level": ["job_type", "days_feeling_burnout_per_month", "sleep_hours"],
+    "sleep_hours": ["stress_level", "screen_time_before_sleep"],
+    "screen_time_before_sleep": ["daily_social_media_time", "sleep_hours"],
+    "breaks_during_work": ["work_hours_per_day", "stress_level"],
+    "uses_focus_apps": ["stress_level", "work_hours_per_day"],
+    "has_digital_wellbeing_enabled": ["screen_time_before_sleep", "stress_level"],
+    "coffee_consumption_per_day": ["stress_level", "work_hours_per_day"],
+    "days_feeling_burnout_per_month": ["stress_level", "job_satisfaction_score"],
+    "weekly_offline_hours": ["daily_social_media_time", "stress_level"],
+    "job_satisfaction_score": ["perceived_productivity_score", "days_feeling_burnout_per_month", "stress_level"]
+}

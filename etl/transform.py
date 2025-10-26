@@ -2,15 +2,15 @@ import pandas as pd
 from sklearn.feature_selection import VarianceThreshold
 from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.preprocessing import OneHotEncoder
+from dependency_map import dependency_map
+from missingValues import advanced_imputation
+
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
 
-    for col in df.columns:
-        if df[col].dtype in ["float64", "int64"]:
-            df[col] = df[col].fillna(df[col].median())
-        else:
-            df[col] = df[col].fillna(df[col].mode()[0])
+    #Missing Value Imputation
+    df = advanced_imputation(df, dependency_map)
 
     if "gender" in df.columns:
         df["gender"] = df["gender"].map({"Male": "M", "Female": "F", "Other": "O"})

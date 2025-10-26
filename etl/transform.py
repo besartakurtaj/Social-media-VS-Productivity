@@ -4,6 +4,7 @@ from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.preprocessing import OneHotEncoder
 from dependency_map import dependency_map
 from missingValues import advanced_imputation
+from binarization import apply_binarization
 
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -11,9 +12,9 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
     #Missing Value Imputation
     df = advanced_imputation(df, dependency_map)
-
-    if "gender" in df.columns:
-        df["gender"] = df["gender"].map({"Male": "M", "Female": "F", "Other": "O"})
+    
+    # Binarization
+    df = apply_binarization(df)
 
     #diskretizimi (for numeric columns)
     numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns

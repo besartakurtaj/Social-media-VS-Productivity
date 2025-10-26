@@ -12,8 +12,10 @@ def extract_data(file_path: str) -> pd.DataFrame:
     print("\n DataFrame Info:")
     print(df.info())
 
-    print("\n Missing Values per Column:")
-    print(df.isnull().sum())
+    print("\nMissing Values per Column:")
+    missing = df.isnull().sum()
+    missing_percent = (missing / len(df)) * 100
+    print(pd.DataFrame({"Missing Count": missing, "Missing %": missing_percent}))
 
     duplicates = df.duplicated().sum()
     print(f"\n Duplicate Rows: {duplicates}")

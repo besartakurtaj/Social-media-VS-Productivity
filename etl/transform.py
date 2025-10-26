@@ -1,5 +1,7 @@
 import pandas as pd
 from sklearn.feature_selection import VarianceThreshold
+from sklearn.preprocessing import KBinsDiscretizer
+from sklearn.preprocessing import OneHotEncoder
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
@@ -39,3 +41,5 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
     bool_cols = df.select_dtypes(include=["bool"]).columns
     df[bool_cols] = df[bool_cols].astype("category")
+
+    return df 

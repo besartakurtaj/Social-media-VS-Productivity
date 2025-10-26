@@ -4,6 +4,7 @@ from sklearn.preprocessing import KBinsDiscretizer
 from sklearn.preprocessing import OneHotEncoder
 from dependency_map import dependency_map
 from missingValues import advanced_imputation
+from binarization import apply_binarization
 
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -11,9 +12,9 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
     #Missing Value Imputation
     df = advanced_imputation(df, dependency_map)
-
-    if "gender" in df.columns:
-        df["gender"] = df["gender"].map({"Male": "M", "Female": "F", "Other": "O"})
+    
+    # Binarization
+    df = apply_binarization(df)
 
     #diskretizimi (for numeric columns)
     numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns
@@ -28,18 +29,5 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     reduced = selector.fit_transform(df[numeric_cols])
     selected_cols = numeric_cols[selector.get_support()]
     df = pd.concat([df[selected_cols], df.drop(columns=numeric_cols, errors="ignore")], axis=1)
-
-    cat_cols = df.select_dtypes(include=["object"]).columns
-
-    if len(cat_cols) > 0:
-        encoder = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
-        encoded = encoder.fit_transform(df[cat_cols])
-        encoded_df = pd.DataFrame(encoded, columns=encoder.get_feature_names_out(cat_cols))
-    
-        df = df.drop(columns=cat_cols)
-        df = pd.concat([df.reset_index(drop=True), encoded_df.reset_index(drop=True)], axis=1)
-
-    bool_cols = df.select_dtypes(include=["bool"]).columns
-    df[bool_cols] = df[bool_cols].astype("category")
 
     return df 

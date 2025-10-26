@@ -1,8 +1,9 @@
 import pandas as pd
+from data_quality import assess_data_quality
 
 def extract_data(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
-
+    quality_report = assess_data_quality(df)
     print("Data extracted")
     print(f"Shape: {df.shape}")
     print("\nFirst 5 rows:")
@@ -16,6 +17,9 @@ def extract_data(file_path: str) -> pd.DataFrame:
 
     duplicates = df.duplicated().sum()
     print(f"\n Duplicate Rows: {duplicates}")
+
+    print("\nLogical Data Issues:")
+    print(quality_report["logical_issues"])
 
     print("\n Descriptive Statistics:")
     print(df.describe())

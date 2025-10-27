@@ -5,6 +5,7 @@ from sklearn.preprocessing import OneHotEncoder
 from dependency_map import dependency_map
 from missingValues import advanced_imputation
 from binarization import apply_binarization
+from aggregation import add_aggregated
 
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -15,6 +16,9 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     
     # Binarization
     df = apply_binarization(df)
+
+    # Aggregation
+    df = add_aggregated(df)
 
     #diskretizimi (for numeric columns)
     numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns

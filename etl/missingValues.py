@@ -13,6 +13,8 @@ def advanced_imputation(df: pd.DataFrame, dependency_map: dict) -> pd.DataFrame:
         if len(missing_indices) == 0:
             continue
 
+        is_int_col = df[target_col].dtype == 'Int64'
+
         for idx in missing_indices:
             row = df.loc[idx]
 
@@ -27,9 +29,14 @@ def advanced_imputation(df: pd.DataFrame, dependency_map: dict) -> pd.DataFrame:
             group_values = df.loc[group_filter, target_col].dropna()
 
             if len(group_values) > 0:
-                df.at[idx, target_col] = group_values.median()
+                imputed_value = group_values.median()
             else:
-                df.at[idx, target_col] = df[target_col].median()
+                imputed_value = df[target_col].median()
+            
+            if is_int_col:
+                imputed_value = round(imputed_value)
+            
+            df.at[idx, target_col] = imputed_value
 
         impute_report[target_col] = len(missing_indices)
     print(impute_report)

@@ -1,8 +1,10 @@
 import pandas as pd
 from data_quality import assess_data_quality
+from data_type_definition import define_data_type
 
 def extract_data(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
+    df = define_data_type(df)
     quality_report = assess_data_quality(df)
     print("Data extracted")
     print(f"Shape: {df.shape}")

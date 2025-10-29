@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.feature_selection import VarianceThreshold
 import numpy as np
 
 def _safe_div(a: pd.Series, b: pd.Series) -> pd.Series:
@@ -41,3 +42,20 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
+def select_features(df: pd.DataFrame,
+                    variance_threshold: float = 0.001,
+                    corr_threshold: float = 0.95) -> pd.DataFrame:
+    
+    numeric = df.select_dtypes(include=[np.number])
+    if not numeric.empty:
+        vt = VarianceThreshold(threshold=variance_threshold)
+        vt.fit(numeric)
+        keep_cols = numeric.columns[vt.get_support(indices=True)]
+        df = df[keep_cols]
+
+    corr = df.corr().abs()
+    upper = corr.where(np.triu(np.ones(corr.shape), k=1).astype(bool))
+    to_drop = [column for column in upper.columns if any(upper[column] > corr_threshold)]
+    df = df.drop(columns=to_drop, errors="ignore")
+
+    return df

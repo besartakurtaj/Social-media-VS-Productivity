@@ -6,7 +6,7 @@ from dependency_map import dependency_map
 from missingValues import advanced_imputation
 from binarization import apply_binarization
 from aggregation import add_aggregated
-from features import create_features
+from features import create_features, select_features
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
@@ -19,7 +19,11 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
     # Aggregation
     df = add_aggregated(df)
+
+    #Krijimi i vetive
     df = create_features(df)
+    
+    df = select_features(df)
     return df 
 
     # #diskretizimi (for numeric columns)

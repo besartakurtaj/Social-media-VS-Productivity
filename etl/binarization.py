@@ -9,7 +9,7 @@ def apply_binarization(df: pd.DataFrame) -> pd.DataFrame:
             df[col] = df[col].astype(int)  # True -> 1, False -> 0
 
     if "gender" in df.columns:
-        df["gender"] = df["gender"].map({"Male": 0, "Female": 1, "Other": 2})
+        df["gender"] = df["gender"].map({"Male": "M", "Female": "F", "Other": "O"})
 
     nominal_cols = ["social_platform_preference"]
     nominal_cols = [col for col in nominal_cols if col in df.columns]

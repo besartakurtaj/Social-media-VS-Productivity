@@ -1,6 +1,7 @@
 import pandas as pd
 from data_quality import assess_data_quality
 from data_type_definition import define_data_type
+from data_sampling import perform_sampling
 
 def extract_data(file_path: str) -> pd.DataFrame:
     df = pd.read_csv(file_path)
@@ -32,8 +33,6 @@ def extract_data(file_path: str) -> pd.DataFrame:
     for col in df.select_dtypes(include=["object"]).columns[:19]:
         print(f"{col}: {df[col].nunique()} unique values")
 
-    #mostrimi ose sampling (10% of dataset)
-    df_sample = df.sample(frac=0.1, random_state=42)
-    print(f"\nSampled Data Shape: {df_sample.shape}")
+    df_sample = perform_sampling(df, method="stratified", frac=0.1)
 
     return df

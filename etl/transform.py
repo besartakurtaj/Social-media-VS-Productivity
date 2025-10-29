@@ -6,7 +6,8 @@ from dependency_map import dependency_map
 from missingValues import advanced_imputation
 from binarization import apply_binarization
 from aggregation import add_aggregated
-from features import create_features, select_features
+from features import create_features
+from discretization import apply_discretization
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop_duplicates()
@@ -22,16 +23,11 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
 
     #Krijimi i vetive
     df = create_features(df)
-    
-    df = select_features(df)
-    return df 
 
-    # #diskretizimi (for numeric columns)
-    # numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns
-    # if len(numeric_cols) > 0:
-    #     discretizer = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
-    #     df[numeric_cols] = discretizer.fit_transform(df[numeric_cols])
-    #     print("Discretization applied to numeric columns successfully.")
+    #Discretization
+    df = apply_discretization(df, column="daily_social_media_time", n_bins=4, strategy="uniform")
+
+    return df 
 
     # # Dimensionality reduction
     # numeric_cols = df.select_dtypes(include=["float64", "int64"]).columns
@@ -39,5 +35,3 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     # reduced = selector.fit_transform(df[numeric_cols])
     # selected_cols = numeric_cols[selector.get_support()]
     # df = pd.concat([df[selected_cols], df.drop(columns=numeric_cols, errors="ignore")], axis=1)
-
-

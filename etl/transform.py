@@ -10,8 +10,7 @@ from features import create_features
 from discretization import apply_discretization
 
 def transform_data(df: pd.DataFrame) -> pd.DataFrame:
-    df = df.drop_duplicates()
-
+    
     #Missing Value Imputation
     df = advanced_imputation(df, dependency_map)
     
@@ -31,10 +30,3 @@ def transform_data(df: pd.DataFrame) -> pd.DataFrame:
     df = apply_discretization(df, column="daily_social_media_time", n_bins=4, strategy="uniform")
 
     return df 
-
-    # # Dimensionality reduction
-    # numeric_cols = df.select_dtypes(include=["float64", "int64"]).columns
-    # selector = VarianceThreshold(threshold=0.01)
-    # reduced = selector.fit_transform(df[numeric_cols])
-    # selected_cols = numeric_cols[selector.get_support()]
-    # df = pd.concat([df[selected_cols], df.drop(columns=numeric_cols, errors="ignore")], axis=1)
